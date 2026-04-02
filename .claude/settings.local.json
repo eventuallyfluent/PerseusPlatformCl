@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --eslint --yes)",
+      "Bash(npm --version)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npx tsc:*)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(findstr LISTENING)",
+      "Bash(xargs -r taskkill /PID /F)",
+      "WebFetch(domain:localhost)",
+      "Bash(npx tsx -e \":*)",
+      "Bash(node -e \":*)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(node --input-type=module:*)",
+      "Bash(powershell -Command \":*)",
+      "Bash(npx tsx:*)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(node -e \"const Stripe = require\\(''''stripe''''\\); console.log\\(Stripe.VERSION || ''''no version''''\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/stripe/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(del \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\scripts\\\\test-import.ts\")",
+      "Bash(node -e \"require\\(''bcryptjs''\\); console.log\\(''bcryptjs ok''\\)\")",
+      "Bash(node -e \"require\\(''next-auth''\\); console.log\\(''next-auth ok''\\)\")",
+      "Bash(ls 'C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\app\\\\\\(public\\)')",
+      "Bash(cat \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\app\\\\\\(public\\)\\\\layout.tsx\")",
+      "Bash(node -e \"require\\(''nodemailer''\\); console.log\\(''nodemailer ok''\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/learn\")",
+      "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/checkout\")",
+      "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/learn/[slug]\")",
+      "Bash(\"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\.gitignore\":*)"
+    ]
+  }
+}

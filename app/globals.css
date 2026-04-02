@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --brand: #6366f1;
+  --brand-dark: #4f46e5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: #111827;
+}
+
+/* Prose utility for lesson markdown content */
+.prose h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 .75rem; }
+.prose h2 { font-size: 1.5rem;   font-weight: 700; margin: 1.25rem 0 .5rem; }
+.prose h3 { font-size: 1.25rem;  font-weight: 600; margin: 1rem 0 .5rem; }
+.prose p  { margin: .75rem 0; line-height: 1.7; }
+.prose ul { list-style: disc;    padding-left: 1.5rem; margin: .75rem 0; }
+.prose ol { list-style: decimal; padding-left: 1.5rem; margin: .75rem 0; }
+.prose li { margin: .25rem 0; }
+.prose a  { color: var(--brand); text-decoration: underline; }
+.prose code { background: #f3f4f6; padding: .1rem .3rem; border-radius: .25rem; font-size: .875em; }
+.prose pre  { background: #1f2937; color: #f9fafb; padding: 1rem; border-radius: .5rem; overflow-x: auto; margin: 1rem 0; }
+.prose pre code { background: none; padding: 0; }
+.prose blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; color: #6b7280; margin: 1rem 0; }
