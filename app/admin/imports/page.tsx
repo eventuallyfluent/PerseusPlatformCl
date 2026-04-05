@@ -14,48 +14,51 @@ export default async function AdminImportsPage() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Imports</h1>
+        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Imports</h1>
         <Link
           href="/admin/imports/new"
-          className="bg-indigo-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="text-sm font-bold px-5 py-2.5 rounded-lg transition-colors text-white"
+          style={{ background: "var(--brand)" }}
         >
           + Import CSV
         </Link>
       </div>
 
       {batches.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-lg font-medium">No imports yet.</p>
-          <Link href="/admin/imports/new" className="mt-3 inline-block text-sm text-indigo-600 hover:underline">
+        <div className="text-center py-20">
+          <p className="text-lg font-medium" style={{ color: "var(--text-primary)" }}>No imports yet.</p>
+          <Link href="/admin/imports/new" className="mt-3 inline-block text-sm hover:underline" style={{ color: "var(--accent)" }}>
             Upload your first CSV →
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+        <div className="rounded-2xl border overflow-hidden" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="border-b" style={{ background: "var(--bg-elevated)", borderColor: "var(--border)" }}>
               <tr>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">File</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Status</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Rows</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Errors</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Dry run</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Date</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>File</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Status</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Rows</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Errors</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Dry run</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody>
               {batches.map((batch) => (
-                <tr key={batch.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-4 font-medium text-gray-900 max-w-xs truncate">{batch.filename}</td>
+                <tr key={batch.id} className="border-t" style={{ borderColor: "var(--border)" }}>
+                  <td className="px-5 py-4 font-medium max-w-xs truncate" style={{ color: "var(--text-primary)" }}>{batch.filename}</td>
                   <td className="px-5 py-4"><StatusBadge status={batch.status} /></td>
-                  <td className="px-5 py-4 text-gray-500">{batch.rowCount}</td>
-                  <td className="px-5 py-4 text-gray-500">
+                  <td className="px-5 py-4" style={{ color: "var(--text-secondary)" }}>{batch.rowCount}</td>
+                  <td className="px-5 py-4">
                     {batch.errorCount > 0 ? (
-                      <span className="text-red-600 font-medium">{batch.errorCount}</span>
-                    ) : batch.errorCount}
+                      <span className="font-medium" style={{ color: "var(--danger)" }}>{batch.errorCount}</span>
+                    ) : (
+                      <span style={{ color: "var(--text-secondary)" }}>{batch.errorCount}</span>
+                    )}
                   </td>
-                  <td className="px-5 py-4 text-gray-500">{batch.dryRun ? "Yes" : "No"}</td>
-                  <td className="px-5 py-4 text-gray-400 text-xs">
+                  <td className="px-5 py-4" style={{ color: "var(--text-secondary)" }}>{batch.dryRun ? "Yes" : "No"}</td>
+                  <td className="px-5 py-4 text-xs" style={{ color: "var(--text-secondary)" }}>
                     {new Date(batch.createdAt).toLocaleString()}
                   </td>
                 </tr>

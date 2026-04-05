@@ -59,6 +59,18 @@ export default auth(async function middleware(request: NextRequest & { auth: unk
     return NextResponse.next();
   }
 
+  // ── Checkout guard ───────────────────────────────────────────────────────────
+  // Require authentication before initiating checkout so userId is never "guest".
+  // The success page is excluded — it's safe to view unauthenticated.
+  if (path.startsWith("/checkout") && !path.startsWith("/checkout/success")) {
+    if (!session?.user) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", path);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
+
   // ── URL redirect resolution ──────────────────────────────────────────────────
   try {
     const resolveUrl = new URL(

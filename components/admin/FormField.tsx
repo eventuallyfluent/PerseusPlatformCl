@@ -7,9 +7,18 @@ type Props = {
   placeholder?: string;
   hint?: string;
   error?: string;
-  rows?: number; // if provided, renders <textarea>
-  children?: React.ReactNode; // for <select>
+  rows?: number;
+  children?: React.ReactNode;
 };
+
+const inputStyle = {
+  background: "var(--bg-elevated)",
+  borderColor: "var(--border)",
+  color: "var(--text-primary)",
+} as React.CSSProperties;
+
+const inputCls =
+  "w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2";
 
 export function FormField({
   label,
@@ -23,18 +32,21 @@ export function FormField({
   rows,
   children,
 }: Props) {
-  const inputCls =
-    "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-50";
-
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={name} className="text-sm font-medium text-gray-700">
+      <label htmlFor={name} className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
         {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
+        {required && <span className="ml-0.5" style={{ color: "var(--danger)" }}>*</span>}
       </label>
 
       {children ? (
-        <select id={name} name={name} defaultValue={String(defaultValue ?? "")} className={inputCls}>
+        <select
+          id={name}
+          name={name}
+          defaultValue={String(defaultValue ?? "")}
+          className={inputCls}
+          style={inputStyle}
+        >
           {children}
         </select>
       ) : rows ? (
@@ -46,6 +58,7 @@ export function FormField({
           placeholder={placeholder}
           required={required}
           className={inputCls}
+          style={inputStyle}
         />
       ) : (
         <input
@@ -56,11 +69,12 @@ export function FormField({
           placeholder={placeholder}
           required={required}
           className={inputCls}
+          style={inputStyle}
         />
       )}
 
-      {hint && <p className="text-xs text-gray-400">{hint}</p>}
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {hint && <p className="text-xs" style={{ color: "var(--text-secondary)" }}>{hint}</p>}
+      {error && <p className="text-xs" style={{ color: "var(--danger)" }}>{error}</p>}
     </div>
   );
 }

@@ -1,24 +1,24 @@
-const VARIANTS: Record<string, string> = {
-  // Course status
-  PUBLISHED: "bg-green-100 text-green-700",
-  DRAFT: "bg-gray-100 text-gray-600",
-  ARCHIVED: "bg-red-100 text-red-600",
-  // Order status
-  COMPLETED: "bg-green-100 text-green-700",
-  PENDING: "bg-yellow-100 text-yellow-700",
-  FAILED: "bg-red-100 text-red-600",
-  REFUNDED: "bg-purple-100 text-purple-700",
-  // Import status
-  RUNNING: "bg-blue-100 text-blue-700",
-  // Generic
-  ACTIVE: "bg-green-100 text-green-700",
-  INACTIVE: "bg-gray-100 text-gray-500",
+// Inline styles keep these tokens working without Tailwind arbitrary values
+const VARIANTS: Record<string, { bg: string; color: string }> = {
+  PUBLISHED:  { bg: "rgba(52,211,153,0.12)",  color: "var(--success)" },
+  COMPLETED:  { bg: "rgba(52,211,153,0.12)",  color: "var(--success)" },
+  ACTIVE:     { bg: "rgba(52,211,153,0.12)",  color: "var(--success)" },
+  DRAFT:      { bg: "rgba(167,139,202,0.12)", color: "var(--text-secondary)" },
+  INACTIVE:   { bg: "rgba(167,139,202,0.12)", color: "var(--text-secondary)" },
+  PENDING:    { bg: "rgba(251,191,36,0.15)",  color: "var(--warning)" },
+  RUNNING:    { bg: "rgba(251,191,36,0.15)",  color: "var(--warning)" },
+  FAILED:     { bg: "rgba(248,113,113,0.12)", color: "var(--danger)" },
+  ARCHIVED:   { bg: "rgba(248,113,113,0.12)", color: "var(--danger)" },
+  REFUNDED:   { bg: "rgba(192,132,252,0.12)", color: "var(--accent)" },
 };
 
 export function StatusBadge({ status }: { status: string }) {
-  const cls = VARIANTS[status] ?? "bg-gray-100 text-gray-600";
+  const v = VARIANTS[status] ?? { bg: "rgba(167,139,202,0.12)", color: "var(--text-secondary)" };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${cls}`}>
+    <span
+      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+      style={{ background: v.bg, color: v.color }}
+    >
       {status}
     </span>
   );

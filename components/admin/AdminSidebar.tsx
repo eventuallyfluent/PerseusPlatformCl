@@ -17,13 +17,16 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-56 min-h-screen bg-gray-950 text-gray-300 flex flex-col flex-shrink-0">
+    <aside
+      className="w-56 min-h-screen flex flex-col flex-shrink-0 border-r"
+      style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}
+    >
       {/* Brand */}
-      <div className="px-5 py-5 border-b border-gray-800">
-        <Link href="/" className="text-white font-bold text-lg tracking-tight">
+      <div className="px-5 py-5 border-b" style={{ borderColor: "var(--border)" }}>
+        <Link href="/" className="font-display text-base" style={{ color: "var(--text-primary)" }}>
           Perseus
         </Link>
-        <p className="text-xs text-gray-500 mt-0.5">Admin</p>
+        <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>Admin</p>
       </div>
 
       {/* Nav */}
@@ -37,11 +40,12 @@ export function AdminSidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
-                active
-                  ? "bg-indigo-600 text-white font-medium"
-                  : "hover:bg-gray-800 hover:text-white"
-              }`}
+              className="flex items-center gap-3 px-5 py-2.5 text-sm transition-colors"
+              style={{
+                background: active ? "var(--brand)" : undefined,
+                color: active ? "#fff" : "var(--text-secondary)",
+                fontWeight: active ? 600 : 400,
+              }}
             >
               <span className="text-base leading-none">{icon}</span>
               {label}
@@ -51,10 +55,11 @@ export function AdminSidebar() {
       </nav>
 
       {/* Sign out */}
-      <div className="px-5 py-4 border-t border-gray-800">
+      <div className="px-5 py-4 border-t" style={{ borderColor: "var(--border)" }}>
         <button
           onClick={() => signOut({ callbackUrl: "/admin/login" })}
-          className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+          className="text-xs transition-colors hover:opacity-80"
+          style={{ color: "var(--text-secondary)" }}
         >
           Sign out →
         </button>

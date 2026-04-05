@@ -19,6 +19,15 @@ export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
 
+const miniInputCls = "flex-1 min-w-[140px] text-sm rounded-lg border px-3 py-1.5 focus:outline-none focus:ring-2";
+const miniInputStyle = {
+  background: "var(--bg-elevated)",
+  borderColor: "var(--border)",
+  color: "var(--text-primary)",
+} as React.CSSProperties;
+
+const miniSelectCls = "text-sm rounded-lg border px-2 py-1.5 focus:outline-none focus:ring-2";
+
 export default async function EditCoursePage({ params }: Props) {
   const { id } = await params;
   const [course, instructors] = await Promise.all([getCourse(id), listInstructors()]);
@@ -30,16 +39,17 @@ export default async function EditCoursePage({ params }: Props) {
   return (
     <div className="p-8">
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/admin/courses" className="text-gray-400 hover:text-gray-600 text-sm">
+        <Link href="/admin/courses" className="text-sm hover:opacity-80 transition-opacity" style={{ color: "var(--text-secondary)" }}>
           ← Courses
         </Link>
-        <span className="text-gray-300">/</span>
-        <h1 className="text-xl font-bold text-gray-900 truncate">{course.title}</h1>
+        <span style={{ color: "var(--border)" }}>/</span>
+        <h1 className="text-xl font-bold truncate" style={{ color: "var(--text-primary)" }}>{course.title}</h1>
         <StatusBadge status={course.status} />
         <Link
           href={`/course/${course.slug}`}
           target="_blank"
-          className="ml-auto text-xs text-indigo-600 hover:underline"
+          className="ml-auto text-xs hover:underline"
+          style={{ color: "var(--accent)" }}
         >
           View sales page ↗
         </Link>
@@ -48,8 +58,8 @@ export default async function EditCoursePage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* ── Left: Course form ─────────────────────────────────────────── */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <h2 className="text-base font-bold text-gray-900 mb-5">Course details</h2>
+          <div className="rounded-2xl border p-7" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
+            <h2 className="text-base font-bold mb-5" style={{ color: "var(--text-primary)" }}>Course details</h2>
             <form action={updateAction} className="space-y-5">
               <FormField label="Title" name="title" required defaultValue={course.title} />
               <FormField label="Slug" name="slug" required defaultValue={course.slug} hint="Changing the slug breaks existing URLs unless a redirect is created." />
@@ -73,7 +83,11 @@ export default async function EditCoursePage({ params }: Props) {
               </FormField>
 
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+                <button
+                  type="submit"
+                  className="text-sm font-bold px-5 py-2.5 rounded-lg transition-colors text-white"
+                  style={{ background: "var(--brand)" }}
+                >
                   Save changes
                 </button>
               </div>
@@ -81,11 +95,11 @@ export default async function EditCoursePage({ params }: Props) {
           </div>
 
           {/* ── Modules & Lessons ─────────────────────────────────────── */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <h2 className="text-base font-bold text-gray-900 mb-5">Curriculum</h2>
+          <div className="rounded-2xl border p-7" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
+            <h2 className="text-base font-bold mb-5" style={{ color: "var(--text-primary)" }}>Curriculum</h2>
 
             {course.modules.length === 0 && (
-              <p className="text-sm text-gray-400 mb-4">No modules yet. Add your first module below.</p>
+              <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>No modules yet. Add your first module below.</p>
             )}
 
             <div className="space-y-5">
@@ -96,32 +110,46 @@ export default async function EditCoursePage({ params }: Props) {
                   const createLessonAction = actionCreateLesson.bind(null, id, mod.id);
 
                   return (
-                    <div key={mod.id} className="border border-gray-200 rounded-xl overflow-hidden">
+                    <div key={mod.id} className="rounded-xl overflow-hidden border" style={{ borderColor: "var(--border)" }}>
                       {/* Module header */}
-                      <div className="bg-gray-50 px-5 py-3 flex items-center gap-3">
-                        <span className="text-xs text-gray-400 font-mono">#{mod.position}</span>
-                        <span className="font-semibold text-gray-900 text-sm flex-1">{mod.title}</span>
+                      <div className="px-5 py-3 flex items-center gap-3" style={{ background: "var(--bg-elevated)" }}>
+                        <span className="text-xs font-mono" style={{ color: "var(--text-secondary)" }}>#{mod.position}</span>
+                        <span className="font-semibold text-sm flex-1" style={{ color: "var(--text-primary)" }}>{mod.title}</span>
                         <form action={deleteModAction}>
-                          <button type="submit" className="text-xs text-red-500 hover:text-red-700 font-medium" onClick={(e) => { if (!confirm("Delete this module and all its lessons?")) e.preventDefault(); }}>
+                          <button
+                            type="submit"
+                            className="text-xs font-medium hover:opacity-70 transition-opacity"
+                            style={{ color: "var(--danger)" }}
+                            onClick={(e) => { if (!confirm("Delete this module and all its lessons?")) e.preventDefault(); }}
+                          >
                             Delete
                           </button>
                         </form>
                       </div>
 
                       {/* Lessons */}
-                      <div className="divide-y divide-gray-100">
+                      <div>
                         {mod.lessons
                           .sort((a, b) => a.position - b.position)
                           .map((lesson) => {
                             const deleteLessonAction = actionDeleteLesson.bind(null, id, lesson.id);
                             return (
-                              <div key={lesson.id} className="flex items-center gap-3 px-5 py-3">
-                                <span className="text-xs text-gray-400 font-mono w-4">{lesson.position}</span>
-                                <span className="text-sm text-gray-700 flex-1">{lesson.title}</span>
+                              <div
+                                key={lesson.id}
+                                className="flex items-center gap-3 px-5 py-3 border-t"
+                                style={{ borderColor: "var(--border)" }}
+                              >
+                                <span className="text-xs font-mono w-4" style={{ color: "var(--text-secondary)" }}>{lesson.position}</span>
+                                <span className="text-sm flex-1" style={{ color: "var(--text-primary)" }}>{lesson.title}</span>
                                 <StatusBadge status={lesson.status} />
-                                <span className="text-xs text-gray-400">{lesson.type}</span>
+                                <span className="text-xs" style={{ color: "var(--text-secondary)" }}>{lesson.type}</span>
                                 <form action={deleteLessonAction}>
-                                  <button type="submit" className="text-xs text-red-400 hover:text-red-600" onClick={(e) => { if (!confirm("Delete this lesson?")) e.preventDefault(); }}>
+                                  <button
+                                    type="submit"
+                                    className="text-xs hover:opacity-70 transition-opacity"
+                                    style={{ color: "var(--danger)" }}
+                                    onClick={(e) => { if (!confirm("Delete this lesson?")) e.preventDefault(); }}
+                                  >
                                     ×
                                   </button>
                                 </form>
@@ -131,15 +159,33 @@ export default async function EditCoursePage({ params }: Props) {
                       </div>
 
                       {/* Add lesson form */}
-                      <form action={createLessonAction} className="px-5 py-3 bg-gray-50/50 border-t border-gray-100 flex gap-2 flex-wrap">
-                        <input name="title" placeholder="Lesson title" required className="flex-1 min-w-[140px] text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                        <select name="type" className="text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                      <form
+                        action={createLessonAction}
+                        className="px-5 py-3 border-t flex gap-2 flex-wrap"
+                        style={{ background: "var(--bg-elevated)", borderColor: "var(--border)" }}
+                      >
+                        <input
+                          name="title"
+                          placeholder="Lesson title"
+                          required
+                          className={miniInputCls}
+                          style={miniInputStyle}
+                        />
+                        <select
+                          name="type"
+                          className={miniSelectCls}
+                          style={miniInputStyle}
+                        >
                           <option value="VIDEO">Video</option>
                           <option value="TEXT">Text</option>
                           <option value="DOWNLOAD">Download</option>
                           <option value="MIXED">Mixed</option>
                         </select>
-                        <button type="submit" className="bg-indigo-600 text-white text-xs font-bold px-4 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <button
+                          type="submit"
+                          className="text-xs font-bold px-4 py-1.5 rounded-lg transition-colors text-white"
+                          style={{ background: "var(--brand)" }}
+                        >
                           + Add lesson
                         </button>
                       </form>
@@ -150,35 +196,47 @@ export default async function EditCoursePage({ params }: Props) {
 
             {/* Add module form */}
             <form action={actionCreateModule.bind(null, id)} className="mt-5 flex gap-2">
-              <input name="title" placeholder="New module title" required className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-              <button type="submit" className="bg-gray-900 text-white text-sm font-bold px-5 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+              <input
+                name="title"
+                placeholder="New module title"
+                required
+                className="flex-1 text-sm rounded-lg border px-3 py-2 focus:outline-none focus:ring-2"
+                style={miniInputStyle}
+              />
+              <button
+                type="submit"
+                className="text-sm font-bold px-5 py-2 rounded-lg transition-colors text-white"
+                style={{ background: "var(--bg-elevated)", color: "var(--text-primary)", border: "1px solid var(--border)" }}
+              >
                 + Add module
               </button>
             </form>
           </div>
         </div>
 
-        {/* ── Right: Danger zone ────────────────────────────────────────── */}
+        {/* ── Right: Sidebar ─────────────────────────────────────────── */}
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
-            <h3 className="text-sm font-bold text-gray-900 mb-1">Sales page</h3>
-            <p className="text-xs text-gray-500 mb-4">Auto-generated from course data.</p>
+          <div className="rounded-2xl border p-6" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
+            <h3 className="text-sm font-bold mb-1" style={{ color: "var(--text-primary)" }}>Sales page</h3>
+            <p className="text-xs mb-4" style={{ color: "var(--text-secondary)" }}>Auto-generated from course data.</p>
             <Link
               href={`/course/${course.slug}`}
               target="_blank"
-              className="block text-center bg-indigo-50 text-indigo-700 text-sm font-bold px-4 py-2.5 rounded-lg hover:bg-indigo-100 transition-colors"
+              className="block text-center text-sm font-bold px-4 py-2.5 rounded-lg transition-colors"
+              style={{ background: "rgba(192,132,252,0.12)", color: "var(--accent)" }}
             >
               Preview sales page ↗
             </Link>
           </div>
 
-          <div className="bg-white rounded-2xl border border-red-200 p-6">
-            <h3 className="text-sm font-bold text-red-700 mb-1">Danger zone</h3>
-            <p className="text-xs text-gray-500 mb-4">Permanently delete this course and all its data. This cannot be undone.</p>
+          <div className="rounded-2xl border p-6" style={{ background: "var(--bg-surface)", borderColor: "rgba(248,113,113,0.3)" }}>
+            <h3 className="text-sm font-bold mb-1" style={{ color: "var(--danger)" }}>Danger zone</h3>
+            <p className="text-xs mb-4" style={{ color: "var(--text-secondary)" }}>Permanently delete this course and all its data. This cannot be undone.</p>
             <form action={deleteAction}>
               <button
                 type="submit"
-                className="w-full bg-red-600 text-white text-sm font-bold px-4 py-2.5 rounded-lg hover:bg-red-700 transition-colors"
+                className="w-full text-sm font-bold px-4 py-2.5 rounded-lg transition-colors text-white"
+                style={{ background: "var(--danger)" }}
                 onClick={(e) => { if (!confirm("Delete this course permanently?")) e.preventDefault(); }}
               >
                 Delete course

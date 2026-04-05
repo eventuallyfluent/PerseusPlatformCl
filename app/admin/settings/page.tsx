@@ -20,9 +20,17 @@ const FIELDS: { key: string; label: string; rows?: number; section: string }[] =
   { section: "Trust Bar", key: "trust.item3.sub",   label: "Item 3 subtitle" },
   // Bottom CTA
   { section: "Bottom CTA", key: "cta.headline", label: "Headline" },
-  { section: "Botto CTA",  key: "cta.subtext",  label: "Subtext", rows: 2 },
+  { section: "Bottom CTA", key: "cta.subtext",  label: "Subtext", rows: 2 },
   { section: "Bottom CTA", key: "cta.button",   label: "Button text" },
 ];
+
+const inputStyle = {
+  background: "var(--bg-elevated)",
+  borderColor: "var(--border)",
+  color: "var(--text-primary)",
+} as React.CSSProperties;
+
+const inputCls = "w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 resize-y";
 
 export default function SettingsPage() {
   const [values, setValues] = useState<Record<string, string>>({});
@@ -63,7 +71,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="p-8">
-        <p className="text-gray-400 text-sm">Loading settings…</p>
+        <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Loading settings…</p>
       </div>
     );
   }
@@ -72,20 +80,24 @@ export default function SettingsPage() {
     <div className="p-8 max-w-3xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Site Settings</h1>
-          <p className="text-sm text-gray-500 mt-1">Edit public-facing copy without a code deploy.</p>
+          <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Site Settings</h1>
+          <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Edit public-facing copy without a code deploy.</p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="bg-indigo-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+          className="text-sm font-bold px-6 py-2.5 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-white"
+          style={{ background: "var(--brand)" }}
         >
           {saving ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
         </button>
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
+        <p
+          className="text-sm rounded-lg px-4 py-3 mb-6 border"
+          style={{ color: "var(--danger)", background: "rgba(248,113,113,0.08)", borderColor: "rgba(248,113,113,0.3)" }}
+        >
           {error}
         </p>
       )}
@@ -93,13 +105,17 @@ export default function SettingsPage() {
       <div className="space-y-10">
         {sections.map((section) => (
           <div key={section}>
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            <h2 className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: "var(--text-secondary)" }}>
               {section}
             </h2>
-            <div className="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
-              {FIELDS.filter((f) => f.section === section).map((field) => (
-                <div key={field.key} className="px-5 py-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <div className="rounded-2xl border overflow-hidden" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
+              {FIELDS.filter((f) => f.section === section).map((field, idx, arr) => (
+                <div
+                  key={field.key}
+                  className="px-5 py-4"
+                  style={idx < arr.length - 1 ? { borderBottom: "1px solid var(--border)" } : undefined}
+                >
+                  <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--text-primary)" }}>
                     {field.label}
                   </label>
                   {field.rows ? (
@@ -107,17 +123,19 @@ export default function SettingsPage() {
                       rows={field.rows}
                       value={values[field.key] ?? ""}
                       onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value }))}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y"
+                      className={inputCls}
+                      style={inputStyle}
                     />
                   ) : (
                     <input
                       type="text"
                       value={values[field.key] ?? ""}
                       onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value }))}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className={inputCls}
+                      style={inputStyle}
                     />
                   )}
-                  <p className="text-xs text-gray-400 mt-1 font-mono">{field.key}</p>
+                  <p className="text-xs font-mono mt-1" style={{ color: "var(--text-secondary)", opacity: 0.6 }}>{field.key}</p>
                 </div>
               ))}
             </div>
@@ -129,7 +147,8 @@ export default function SettingsPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="bg-indigo-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+          className="text-sm font-bold px-6 py-2.5 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-white"
+          style={{ background: "var(--brand)" }}
         >
           {saving ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
         </button>

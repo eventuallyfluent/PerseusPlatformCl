@@ -12,52 +12,46 @@ export default async function AdminCoursesPage() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Courses</h1>
+        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Courses</h1>
         <Link
           href="/admin/courses/new"
-          className="bg-indigo-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="text-sm font-bold px-5 py-2.5 rounded-lg transition-colors text-white"
+          style={{ background: "var(--brand)" }}
         >
           + New course
         </Link>
       </div>
 
       {courses.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-lg font-medium">No courses yet.</p>
-          <Link href="/admin/courses/new" className="mt-3 inline-block text-sm text-indigo-600 hover:underline">
+        <div className="text-center py-20">
+          <p className="text-lg font-medium" style={{ color: "var(--text-primary)" }}>No courses yet.</p>
+          <Link href="/admin/courses/new" className="mt-3 inline-block text-sm hover:underline" style={{ color: "var(--accent)" }}>
             Create your first course →
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+        <div className="rounded-2xl border overflow-hidden" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="border-b" style={{ background: "var(--bg-elevated)", borderColor: "var(--border)" }}>
               <tr>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Title</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Slug</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Status</th>
-                <th className="text-left px-5 py-3 font-semibold text-gray-600">Modules</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Title</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Slug</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Status</th>
+                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--text-secondary)" }}>Modules</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody>
               {courses.map((course) => (
-                <tr key={course.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-4 font-medium text-gray-900 max-w-xs truncate">
-                    {course.title}
-                  </td>
-                  <td className="px-5 py-4 text-gray-500 font-mono text-xs">{course.slug}</td>
-                  <td className="px-5 py-4">
-                    <StatusBadge status={course.status} />
-                  </td>
-                  <td className="px-5 py-4 text-gray-500">
+                <tr key={course.id} className="border-t" style={{ borderColor: "var(--border)" }}>
+                  <td className="px-5 py-4 font-medium max-w-xs truncate" style={{ color: "var(--text-primary)" }}>{course.title}</td>
+                  <td className="px-5 py-4 font-mono text-xs" style={{ color: "var(--text-secondary)" }}>{course.slug}</td>
+                  <td className="px-5 py-4"><StatusBadge status={course.status} /></td>
+                  <td className="px-5 py-4" style={{ color: "var(--text-secondary)" }}>
                     {(course as unknown as { _count: { modules: number } })._count?.modules ?? 0}
                   </td>
                   <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/admin/courses/${course.id}`}
-                      className="text-indigo-600 hover:underline font-medium text-xs"
-                    >
+                    <Link href={`/admin/courses/${course.id}`} className="font-medium text-xs hover:underline" style={{ color: "var(--accent)" }}>
                       Edit →
                     </Link>
                   </td>

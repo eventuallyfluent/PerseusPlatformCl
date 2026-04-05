@@ -12,14 +12,14 @@ export default async function NewCoursePage() {
   return (
     <div className="p-8 max-w-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link href="/admin/courses" className="text-gray-400 hover:text-gray-600 text-sm">
+        <Link href="/admin/courses" className="text-sm hover:opacity-80 transition-opacity" style={{ color: "var(--text-secondary)" }}>
           ← Courses
         </Link>
-        <span className="text-gray-300">/</span>
-        <h1 className="text-2xl font-bold text-gray-900">New course</h1>
+        <span style={{ color: "var(--border)" }}>/</span>
+        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>New course</h1>
       </div>
 
-      <form action={actionCreateCourse} className="bg-white rounded-2xl border border-gray-200 p-8 space-y-6">
+      <form action={actionCreateCourse} className="rounded-2xl border p-8 space-y-6" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
         <FormField label="Title" name="title" required placeholder="e.g. Introduction to Python" />
         <FormField label="Slug" name="slug" placeholder="auto-generated from title if empty" hint="URL-safe identifier. Leave blank to auto-generate." />
         <FormField label="Subtitle" name="subtitle" placeholder="A short one-line description" />
@@ -40,13 +40,15 @@ export default async function NewCoursePage() {
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="bg-indigo-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+            className="text-sm font-bold px-6 py-2.5 rounded-lg transition-colors text-white"
+            style={{ background: "var(--brand)" }}
           >
             Create course
           </button>
           <Link
             href="/admin/courses"
-            className="border border-gray-300 text-gray-700 font-bold px-6 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            className="border text-sm font-bold px-6 py-2.5 rounded-lg transition-colors"
+            style={{ borderColor: "var(--border)", color: "var(--text-secondary)" }}
           >
             Cancel
           </Link>
