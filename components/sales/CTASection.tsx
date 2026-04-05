@@ -23,12 +23,15 @@ export function CTASection({ cta, courseSlug }: Props) {
   if (!cta.offers.length) return null;
 
   return (
-    <section className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 text-center">
-        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
+    <section style={{ background: "linear-gradient(135deg, #160830, var(--bg-surface))" }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <h2
+          className="font-display text-3xl sm:text-4xl mb-4"
+          style={{ color: "var(--text-primary)" }}
+        >
           Ready to enroll?
         </h2>
-        <p className="text-indigo-100 text-lg mb-10">
+        <p className="text-lg mb-10" style={{ color: "var(--text-secondary)" }}>
           Get lifetime access. Learn at your own pace.
         </p>
 
@@ -42,7 +45,8 @@ export function CTASection({ cta, courseSlug }: Props) {
               <Link
                 key={offer.id}
                 href={`/checkout/${courseSlug}?offerId=${offer.id}&priceId=${defaultPrice.id}`}
-                className="bg-white text-indigo-700 font-bold px-8 py-4 rounded-xl hover:bg-indigo-50 transition-colors shadow-lg text-center min-w-[200px]"
+                className="font-bold px-8 py-4 rounded-xl transition-colors shadow-lg text-center min-w-[200px] text-white border"
+                style={{ background: "var(--brand)", borderColor: "var(--brand)" }}
               >
                 <div className="text-lg">
                   {formatPrice(
@@ -51,7 +55,7 @@ export function CTASection({ cta, courseSlug }: Props) {
                     defaultPrice.billingInterval
                   )}
                 </div>
-                <div className="text-sm font-normal text-gray-500 mt-0.5">
+                <div className="text-sm font-normal mt-0.5" style={{ color: "var(--accent)" }}>
                   {offer.name}
                 </div>
               </Link>
@@ -59,7 +63,7 @@ export function CTASection({ cta, courseSlug }: Props) {
           })}
         </div>
 
-        <p className="mt-6 text-sm text-indigo-200">
+        <p className="mt-6 text-sm" style={{ color: "var(--text-secondary)" }}>
           Secure checkout · Instant access · 30-day guarantee
         </p>
       </div>

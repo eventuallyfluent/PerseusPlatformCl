@@ -412,3 +412,12 @@ model ImportBatch {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 }
+
+// ─── Site Configuration ───────────────────────────────────────────────────────
+// Key-value store for admin-editable site settings.
+// Keys are namespaced: "hero.headline", "hero.subtext", "trust.item1", etc.
+model SiteSetting {
+  key       String   @id           // e.g. "hero.headline"
+  value     String                 // plain text or JSON string
+  updatedAt DateTime @updatedAt
+}

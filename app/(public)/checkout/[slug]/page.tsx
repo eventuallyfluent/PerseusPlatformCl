@@ -3,8 +3,6 @@
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 
-// ─── Inner component (reads searchParams — must be inside Suspense) ────────────
-
 function CheckoutInner() {
   const router = useRouter();
   const params = useParams<{ slug: string }>();
@@ -16,7 +14,6 @@ function CheckoutInner() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-initiate on mount if both IDs are present
   useEffect(() => {
     if (!offerId || !priceId) return;
     initiate();
@@ -50,10 +47,11 @@ function CheckoutInner() {
   if (!offerId || !priceId) {
     return (
       <div className="max-w-lg mx-auto px-4 py-24 text-center">
-        <p className="text-red-600 font-medium">Invalid checkout link.</p>
+        <p className="font-medium" style={{ color: "var(--danger)" }}>Invalid checkout link.</p>
         <button
           onClick={() => router.back()}
-          className="mt-4 text-sm text-indigo-600 hover:underline"
+          className="mt-4 text-sm hover:underline"
+          style={{ color: "var(--accent)" }}
         >
           ← Go back
         </button>
@@ -65,29 +63,43 @@ function CheckoutInner() {
     <div className="max-w-lg mx-auto px-4 py-24 text-center">
       {loading && (
         <>
-          <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-6" />
-          <h1 className="text-xl font-bold text-gray-900 mb-2">Preparing your checkout…</h1>
-          <p className="text-gray-500 text-sm">You will be redirected to our secure payment page shortly.</p>
+          <div
+            className="w-12 h-12 border-4 rounded-full animate-spin mx-auto mb-6"
+            style={{ borderColor: "var(--border)", borderTopColor: "var(--brand)" }}
+          />
+          <h1 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
+            Preparing your checkout…
+          </h1>
+          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+            You will be redirected to our secure payment page shortly.
+          </p>
         </>
       )}
       {error && (
         <>
-          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-6"
+            style={{ background: "rgba(248,113,113,0.12)" }}
+          >
+            <svg className="w-6 h-6" style={{ color: "var(--danger)" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-gray-900 mb-2">Something went wrong</h1>
-          <p className="text-gray-500 text-sm mb-6">{error}</p>
+          <h1 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
+            Something went wrong
+          </h1>
+          <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>{error}</p>
           <button
             onClick={initiate}
-            className="bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors"
+            className="font-bold px-6 py-3 rounded-xl transition-colors text-white"
+            style={{ background: "var(--brand)" }}
           >
             Try again
           </button>
           <button
             onClick={() => router.push(`/course/${params.slug}`)}
-            className="block mt-4 text-sm text-gray-500 hover:text-gray-700 mx-auto"
+            className="block mt-4 text-sm mx-auto hover:underline"
+            style={{ color: "var(--text-secondary)" }}
           >
             ← Back to course
           </button>
@@ -97,14 +109,15 @@ function CheckoutInner() {
   );
 }
 
-// ─── Page wrapper ──────────────────────────────────────────────────────────────
-
 export default function CheckoutPage() {
   return (
     <Suspense
       fallback={
         <div className="max-w-lg mx-auto px-4 py-24 text-center">
-          <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto" />
+          <div
+            className="w-12 h-12 border-4 rounded-full animate-spin mx-auto"
+            style={{ borderColor: "var(--border)", borderTopColor: "var(--brand)" }}
+          />
         </div>
       }
     >

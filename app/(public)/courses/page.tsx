@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: `${BASE_URL}/courses`,
-    title: "All Courses — Perseus Platform",
+    title: "All Courses — Perseus Arcane Academy",
     description: "Browse our full library of expert-led courses. Learn at your own pace with lifetime access.",
-    siteName: "Perseus Platform",
+    siteName: "Perseus Arcane Academy",
   },
   twitter: {
     card: "summary",
-    title: "All Courses — Perseus Platform",
+    title: "All Courses — Perseus Arcane Academy",
     description: "Expert-led courses. Browse and enroll today.",
   },
 };
@@ -31,10 +31,13 @@ export default async function CoursesPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">
+        <p className="text-xs font-mono uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
+          Perseus Arcane Academy
+        </p>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: "var(--text-primary)" }}>
           All Courses
         </h1>
-        <p className="text-gray-500 text-lg">
+        <p className="text-lg" style={{ color: "var(--text-secondary)" }}>
           {courses.length === 0
             ? "No courses available yet. Check back soon."
             : `${courses.length} course${courses.length === 1 ? "" : "s"} available`}
@@ -57,9 +60,9 @@ export default async function CoursesPage() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-24 text-gray-400">
+        <div className="text-center py-24" style={{ color: "var(--text-secondary)" }}>
           <svg
-            className="w-16 h-16 mx-auto mb-4 opacity-40"
+            className="w-16 h-16 mx-auto mb-4 opacity-30"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -71,7 +74,7 @@ export default async function CoursesPage() {
               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
             />
           </svg>
-          <p className="text-xl font-medium">No courses yet</p>
+          <p className="text-xl font-medium" style={{ color: "var(--text-primary)" }}>No courses yet</p>
           <p className="text-sm mt-2">Come back soon — new courses are on the way.</p>
         </div>
       )}

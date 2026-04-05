@@ -3,9 +3,9 @@ import type { SalesPageInstructor } from "@/types";
 
 export function InstructorSection({ instructor }: { instructor: SalesPageInstructor }) {
   return (
-    <section className="bg-white border-b border-gray-100">
+    <section className="border-b" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8" style={{ color: "var(--text-primary)" }}>
           Your instructor
         </h2>
         <div className="flex flex-col sm:flex-row gap-6 items-start">
@@ -20,7 +20,10 @@ export function InstructorSection({ instructor }: { instructor: SalesPageInstruc
                 className="rounded-full object-cover w-24 h-24"
               />
             ) : (
-              <div className="w-24 h-24 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-3xl font-bold">
+              <div
+                className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white"
+                style={{ background: "var(--brand)" }}
+              >
                 {instructor.name.charAt(0).toUpperCase()}
               </div>
             )}
@@ -28,14 +31,17 @@ export function InstructorSection({ instructor }: { instructor: SalesPageInstruc
 
           {/* Details */}
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 mb-1">{instructor.name}</h3>
+            <h3 className="text-xl font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+              {instructor.name}
+            </h3>
             <div className="flex gap-4 mb-3">
               {instructor.website && (
                 <a
                   href={instructor.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-indigo-600 hover:underline"
+                  className="text-sm hover:underline"
+                  style={{ color: "var(--accent)" }}
                 >
                   Website ↗
                 </a>
@@ -45,7 +51,8 @@ export function InstructorSection({ instructor }: { instructor: SalesPageInstruc
                   href={`https://twitter.com/${instructor.twitter.replace("@", "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-indigo-600 hover:underline"
+                  className="text-sm hover:underline"
+                  style={{ color: "var(--accent)" }}
                 >
                   Twitter ↗
                 </a>
@@ -55,14 +62,17 @@ export function InstructorSection({ instructor }: { instructor: SalesPageInstruc
                   href={instructor.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-indigo-600 hover:underline"
+                  className="text-sm hover:underline"
+                  style={{ color: "var(--accent)" }}
                 >
                   LinkedIn ↗
                 </a>
               )}
             </div>
             {instructor.bio && (
-              <p className="text-gray-600 leading-relaxed text-sm">{instructor.bio}</p>
+              <p className="leading-relaxed text-sm" style={{ color: "var(--text-secondary)" }}>
+                {instructor.bio}
+              </p>
             )}
           </div>
         </div>

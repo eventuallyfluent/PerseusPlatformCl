@@ -1,10 +1,35 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens ───────────────────────────────────────────────────────── */
 :root {
-  --brand: #6366f1;
-  --brand-dark: #4f46e5;
+  /* Backgrounds */
+  --bg-base:        #0D0D1A; /* Deepest bg — the night sky */
+  --bg-surface:     #1A1A2E; /* Cards, sidebar, panels */
+  --bg-elevated:    #252540; /* Hover states, dropdowns */
+
+  /* Brand */
+  --brand:          #7B2FBE; /* CTAs: Enroll, Buy, Submit */
+  --brand-hover:    #9B3FDE; /* Brand elements on hover */
+  --accent:         #C084FC; /* Badges, highlights, links */
+  --accent-gold:    #D4A855; /* Stars, certs, premium */
+
+  /* Text */
+  --text-primary:   #FBEAF8; /* All headings and body text */
+  --text-secondary: #A78BCA; /* Metadata, descriptions */
+
+  /* Structure */
+  --border:         #2E2E4E; /* Card borders, dividers */
+
+  /* Status */
+  --success:        #34D399; /* Completed, paid, progress */
+  --warning:        #FBBF24; /* Locked drip, pending */
+  --danger:         #F87171; /* Errors, failed payment */
+
+  /* Admin only */
+  --surface-light:  #FAFAFA;
 }
 
+/* ─── Reset ───────────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
@@ -14,21 +39,30 @@ html {
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #ffffff;
-  color: #111827;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
 }
 
-/* Prose utility for lesson markdown content */
-.prose h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 .75rem; }
-.prose h2 { font-size: 1.5rem;   font-weight: 700; margin: 1.25rem 0 .5rem; }
-.prose h3 { font-size: 1.25rem;  font-weight: 600; margin: 1rem 0 .5rem; }
-.prose p  { margin: .75rem 0; line-height: 1.7; }
+/* ─── Font helpers ────────────────────────────────────────────────────────── */
+.font-display {
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── Prose — lesson markdown content ────────────────────────────────────── */
+.prose h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 .75rem; color: var(--text-primary); }
+.prose h2 { font-size: 1.5rem;   font-weight: 700; margin: 1.25rem 0 .5rem; color: var(--text-primary); }
+.prose h3 { font-size: 1.25rem;  font-weight: 600; margin: 1rem 0 .5rem; color: var(--text-primary); }
+.prose p  { margin: .75rem 0; line-height: 1.7; color: var(--text-primary); }
 .prose ul { list-style: disc;    padding-left: 1.5rem; margin: .75rem 0; }
 .prose ol { list-style: decimal; padding-left: 1.5rem; margin: .75rem 0; }
-.prose li { margin: .25rem 0; }
-.prose a  { color: var(--brand); text-decoration: underline; }
-.prose code { background: #f3f4f6; padding: .1rem .3rem; border-radius: .25rem; font-size: .875em; }
-.prose pre  { background: #1f2937; color: #f9fafb; padding: 1rem; border-radius: .5rem; overflow-x: auto; margin: 1rem 0; }
+.prose li { margin: .25rem 0; color: var(--text-primary); }
+.prose a  { color: var(--accent); text-decoration: underline; }
+.prose code { background: var(--bg-elevated); color: var(--accent); padding: .1rem .3rem; border-radius: .25rem; font-size: .875em; font-family: 'JetBrains Mono', monospace; }
+.prose pre  { background: var(--bg-elevated); color: var(--text-primary); padding: 1rem; border-radius: .5rem; overflow-x: auto; margin: 1rem 0; }
 .prose pre code { background: none; padding: 0; }
-.prose blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; color: #6b7280; margin: 1rem 0; }
+.prose blockquote { border-left: 4px solid var(--border); padding-left: 1rem; color: var(--text-secondary); margin: 1rem 0; }

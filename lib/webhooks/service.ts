@@ -142,8 +142,22 @@ export async function processWebhookEvent(
       }
 
       case "refund.created": {
-        if (!event.orderId) break;
-        await refundOrder(event.orderId);
+        // event.gatewayOrderId carries the gateway's PaymentIntent/charge ID.
+        // Resolve to our internal orderId via the Payment table.
+        const gatewayPaymentId = event.gatewayOrderId ?? event.orderId;
+        if (!gatewayPaymentId) break;
+
+        const payment = await db.payment.findFirst({
+          where: { gatewayPaymentId },
+          select: { orderId: true },
+        });
+
+        if (!payment) {
+          console.warn(`[webhook] refund.created: no payment found for gatewayPaymentId=${gatewayPaymentId}`);
+          break;
+        }
+
+        await refundOrder(payment.orderId);
         break;
       }
     }

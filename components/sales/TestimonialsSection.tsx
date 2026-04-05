@@ -8,7 +8,8 @@ function Stars({ rating }: { rating: number | null }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <svg
           key={i}
-          className={`w-4 h-4 ${i < rating ? "text-yellow-400" : "text-gray-200"}`}
+          className="w-4 h-4"
+          style={{ color: i < rating ? "var(--accent-gold)" : "var(--border)" }}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -23,22 +24,23 @@ export function TestimonialsSection({ testimonials }: { testimonials: SalesPageT
   if (!testimonials.items.length) return null;
 
   return (
-    <section className="bg-indigo-50 border-b border-indigo-100">
+    <section className="border-b" style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8" style={{ color: "var(--text-primary)" }}>
           What students say
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.items.map((t, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-indigo-100 flex flex-col"
+              className="rounded-2xl p-6 flex flex-col border"
+              style={{ background: "var(--bg-elevated)", borderColor: "var(--border)" }}
             >
               <Stars rating={t.rating} />
-              <p className="text-gray-700 text-sm leading-relaxed flex-1 mb-4">
+              <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "var(--text-primary)" }}>
                 &ldquo;{t.body}&rdquo;
               </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-3 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
                 {t.avatar ? (
                   <Image
                     src={t.avatar}
@@ -48,13 +50,16 @@ export function TestimonialsSection({ testimonials }: { testimonials: SalesPageT
                     className="rounded-full object-cover w-9 h-9"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-sm font-bold">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                    style={{ background: "var(--brand)" }}
+                  >
                     {t.name.charAt(0).toUpperCase()}
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                  {t.role && <p className="text-xs text-gray-400">{t.role}</p>}
+                  <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{t.name}</p>
+                  {t.role && <p className="text-xs" style={{ color: "var(--text-secondary)" }}>{t.role}</p>}
                 </div>
               </div>
             </div>

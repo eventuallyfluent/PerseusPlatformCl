@@ -22,10 +22,10 @@ export function CourseCard({
   return (
     <Link
       href={`/course/${slug}`}
-      className="group flex flex-col bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="group flex flex-col bg-[var(--bg-surface)] rounded-2xl border border-[var(--border)] overflow-hidden hover:border-[var(--accent)] transition-all hover:shadow-lg hover:shadow-[var(--brand)]/10"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-video bg-gray-100 overflow-hidden">
+      <div className="relative aspect-video bg-[var(--bg-elevated)] overflow-hidden">
         {thumbnailUrl ? (
           <Image
             src={thumbnailUrl}
@@ -35,9 +35,9 @@ export function CourseCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
+          <div className="absolute inset-0 flex items-center justify-center">
             <svg
-              className="w-16 h-16 text-indigo-300"
+              className="w-16 h-16 text-[var(--border)]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,21 +56,21 @@ export function CourseCard({
       {/* Content */}
       <div className="flex flex-col flex-1 p-5 gap-2">
         {instructorName && (
-          <p className="text-xs font-medium text-indigo-600 uppercase tracking-wide">
+          <p className="text-xs font-medium text-[var(--accent)] uppercase tracking-wide">
             {instructorName}
           </p>
         )}
-        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-[var(--text-primary)] leading-snug group-hover:text-[var(--accent)] transition-colors line-clamp-2">
           {title}
         </h3>
         {subtitle && (
-          <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-2">
             {subtitle}
           </p>
         )}
         <div className="mt-auto pt-3 flex items-center justify-between">
-          <span className="text-sm font-bold text-gray-900">{priceLabel}</span>
-          <span className="text-xs text-indigo-600 font-medium group-hover:underline">
+          <span className="text-sm font-bold text-[var(--text-primary)]">{priceLabel}</span>
+          <span className="text-xs text-[var(--accent)] font-medium group-hover:underline">
             View course →
           </span>
         </div>

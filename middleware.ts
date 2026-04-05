@@ -9,7 +9,16 @@ import { auth } from "@/lib/auth";
  *    Unauthenticated → redirect to /admin/login.
  *    Authenticated non-admin → redirect to /.
  *
- * 2. URL redirects: all other non-asset, non-API requests are checked
+ * 2. Learn guard: /learn/* requires authentication.
+ *    Unauthenticated → redirect to /login?callbackUrl=<path>.
+ *    Enrollment is checked in the page component (needs DB + courseId context).
+ *    Preview lessons bypass enrollment but this gate ensures the user is known.
+ *    Note: isPreview lessons still render without this gate because the page
+ *    component skips the enrollment check — but having an auth gate here is
+ *    intentional: anonymous users must create an account before accessing any
+ *    lesson content, even previews.
+ *
+ * 3. URL redirects: all other non-asset, non-API requests are checked
  *    against the Redirect table via /api/redirects/resolve (delegated to
  *    avoid Prisma in Edge Runtime).
  *
@@ -18,14 +27,13 @@ import { auth } from "@/lib/auth";
 export default auth(async function middleware(request: NextRequest & { auth: unknown }) {
   const path = request.nextUrl.pathname;
 
+  const session = (request as unknown as { auth: { user?: { id?: string; isAdmin?: boolean } } | null }).auth;
+
   // ── Admin guard ─────────────────────────────────────────────────────────────
   if (path.startsWith("/admin")) {
-    // Allow the login page through
     if (path === "/admin/login") {
       return NextResponse.next();
     }
-
-    const session = (request as unknown as { auth: { user?: { isAdmin?: boolean } } | null }).auth;
 
     if (!session) {
       const loginUrl = new URL("/admin/login", request.url);
@@ -37,6 +45,17 @@ export default auth(async function middleware(request: NextRequest & { auth: unk
       return NextResponse.redirect(new URL("/", request.url));
     }
 
+    return NextResponse.next();
+  }
+
+  // ── Learn guard ──────────────────────────────────────────────────────────────
+  if (path.startsWith("/learn")) {
+    if (!session?.user) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", path);
+      return NextResponse.redirect(loginUrl);
+    }
+    // Enrollment check happens in the page component (requires courseId from DB)
     return NextResponse.next();
   }
 
