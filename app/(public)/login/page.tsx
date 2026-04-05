@@ -111,12 +111,21 @@ function LoginForm() {
           </button>
         </form>
 
-        <p className="text-center text-xs mt-6" style={{ color: "var(--text-secondary)" }}>
+        <p className="text-center text-sm mt-6" style={{ color: "var(--text-secondary)" }}>
+          No account?{" "}
+          <Link
+            href="/register"
+            className="font-medium hover:opacity-80 transition-opacity"
+            style={{ color: "var(--accent)" }}
+          >
+            Create one free
+          </Link>
+        </p>
+        <p className="text-center text-xs mt-3" style={{ color: "var(--text-secondary)", opacity: 0.6 }}>
           Admin?{" "}
           <Link
             href="/admin/login"
             className="underline hover:opacity-80 transition-opacity"
-            style={{ color: "var(--accent)" }}
           >
             Sign in here
           </Link>

@@ -143,6 +143,13 @@ export default async function EditCoursePage({ params }: Props) {
                                 <span className="text-sm flex-1" style={{ color: "var(--text-primary)" }}>{lesson.title}</span>
                                 <StatusBadge status={lesson.status} />
                                 <span className="text-xs" style={{ color: "var(--text-secondary)" }}>{lesson.type}</span>
+                                <Link
+                                  href={`/admin/courses/${id}/lessons/${lesson.id}`}
+                                  className="text-xs hover:underline"
+                                  style={{ color: "var(--accent)" }}
+                                >
+                                  Edit
+                                </Link>
                                 <form action={deleteLessonAction}>
                                   <button
                                     type="submit"

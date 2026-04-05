@@ -30,7 +30,32 @@
       "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/learn\")",
       "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/checkout\")",
       "Bash(ls \"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude/app/\\(public\\)/learn/[slug]\")",
-      "Bash(\"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\.gitignore\":*)"
+      "Bash(\"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\.gitignore\":*)",
+      "Bash(\"C:\\\\Users\\\\stude\\\\OneDrive\\\\Desktop\\\\PerseusPlatform Claude\\\\.gitattributes\":*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(grep -E \"^-.*\\\\.\\(md|json\\)$\")",
+      "Bash(ls \"C:/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\\\\\(public\\\\\\)\")",
+      "Bash(grep -E \"\\\\.\\(ts|js|json|css|md\\)$\")",
+      "Bash(find '/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)' -type f)",
+      "Bash(find '/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)' -type d)",
+      "Bash(node -e \"const http = require\\(''http''\\); const req = http.get\\(''http://localhost:3000/'', res => { let d=''''; res.on\\(''data'',c=>d+=c\\); res.on\\(''end'',\\(\\)=>console.log\\(res.statusCode, d.substring\\(0,500\\)\\)\\); }\\); req.on\\(''error'', e=>console.error\\(e.message\\)\\); req.setTimeout\\(5000,\\(\\)=>{console.log\\(''timeout''\\);req.abort\\(\\)}\\);\")",
+      "Bash(taskkill /PID 3504 /F)",
+      "Bash(taskkill /PID 26208 /F)",
+      "Bash(taskkill /PID 30000 /F)",
+      "Bash(cmd /c \"taskkill /PID 3504 /F & taskkill /PID 26208 /F & taskkill /PID 30000 /F\")",
+      "Bash(cmd /c \"taskkill /IM node.exe /F\")",
+      "Bash(node -e \"const http=require\\(''http''\\);const req=http.get\\(''http://localhost:3000/'',res=>{let d='''';res.on\\(''data'',c=>d+=c\\);res.on\\(''end'',\\(\\)=>console.log\\(''STATUS:'',res.statusCode,''BODY:'',d.substring\\(0,300\\)\\)\\);}\\);req.on\\(''error'',e=>console.log\\(''ERR:'',e.message\\)\\);req.setTimeout\\(8000,\\(\\)=>{console.log\\(''TIMEOUT''\\);req.destroy\\(\\)}\\);\")",
+      "Bash(node -e \"const http=require\\(''http''\\);const req=http.get\\(''http://localhost:3001/'',res=>{let d='''';res.on\\(''data'',c=>d+=c\\);res.on\\(''end'',\\(\\)=>console.log\\(''STATUS:'',res.statusCode,''LEN:'',d.length,''SNIPPET:'',d.substring\\(0,200\\)\\)\\);}\\);req.on\\(''error'',e=>console.log\\(''ERR:'',e.message\\)\\);req.setTimeout\\(10000,\\(\\)=>{console.log\\(''TIMEOUT''\\);req.destroy\\(\\)}\\);\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/collections/page.tsx\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/instructors/page.tsx\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/blog/page.tsx\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/faq/page.tsx\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/privacy/page.tsx\")",
+      "Bash(test -f \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/\\(public\\)/terms/page.tsx\")",
+      "Bash(ls -1d \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/admin\"/*/)",
+      "Bash(ls -1d /c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/admin/*/)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(ls -d */)"
     ]
   }
 }

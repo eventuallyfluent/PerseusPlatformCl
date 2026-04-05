@@ -2,27 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { resolveActiveAdapter } from "@/lib/payments/registry";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 const CheckoutSchema = z.object({
   offerId: z.string().min(1),
   priceId: z.string().min(1),
-  // userId is optional until Phase 8 auth gate is enforced at the page level.
-  userId: z.string().optional(),
   couponId: z.string().optional(),
 });
 
 /**
  * POST /api/checkout
- * Body: { offerId, priceId, userId?, couponId? }
+ * Body: { offerId, priceId, couponId? }
+ * userId is ALWAYS read from the server session — never trusted from the client.
  * Returns: { sessionId, url } — redirect URL from the active payment gateway.
- *
- * The active gateway is determined entirely by the DB (Gateway.isActive).
- * No gateway slug is hardcoded here — flip isActive in the DB to switch providers.
  */
 export async function POST(request: NextRequest) {
   try {
+    // Require authenticated session — userId must come from the server
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const parsed = CheckoutSchema.safeParse(body);
 
@@ -30,7 +34,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
     }
 
-    const { offerId, priceId, userId, couponId } = parsed.data;
+    const { offerId, priceId, couponId } = parsed.data;
 
     // Validate offer + price exist before touching the payment gateway
     const offer = await db.offer.findUnique({
@@ -57,7 +61,7 @@ export async function POST(request: NextRequest) {
     const result = await adapter.createCheckoutSession({
       offerId,
       priceId,
-      userId: userId ?? "guest",
+      userId,
       couponId,
       successUrl: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${origin}/course/${offer.course.slug}`,
