@@ -55,7 +55,8 @@
       "Bash(ls -1d \"/c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/admin\"/*/)",
       "Bash(ls -1d /c/Users/stude/OneDrive/Desktop/PerseusPlatform Claude/app/admin/*/)",
       "Bash(xargs -I{} basename {})",
-      "Bash(ls -d */)"
+      "Bash(ls -d */)",
+      "WebFetch(domain:scpdocs.smartcreatorpress.com)"
     ]
   }
 }

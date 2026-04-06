@@ -8,6 +8,8 @@ type Lesson = {
   title: string;
   type: string;
   isPreview: boolean;
+  isCompleted?: boolean;
+  isLocked?: boolean;
 };
 
 type Module = {
@@ -21,6 +23,7 @@ type Props = {
   courseTitle: string;
   modules: Module[];
   activeLessonId: string;
+  progressPercent?: number; // 0-100
 };
 
 const TYPE_ICON: Record<string, string> = {
@@ -30,7 +33,7 @@ const TYPE_ICON: Record<string, string> = {
   MIXED: "◈",
 };
 
-export function LessonSidebar({ courseSlug, courseTitle, modules, activeLessonId }: Props) {
+export function LessonSidebar({ courseSlug, courseTitle, modules, activeLessonId, progressPercent }: Props) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -54,11 +57,11 @@ export function LessonSidebar({ courseSlug, courseTitle, modules, activeLessonId
 
       {/* Sidebar */}
       <aside
-        className={`lg:w-80 lg:min-h-screen flex-shrink-0 border-r ${collapsed ? "hidden" : "block"} lg:block`}
+        className={`lg:w-80 lg:min-h-screen flex-shrink-0 flex flex-col border-r ${collapsed ? "hidden" : "block"} lg:flex`}
         style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}
       >
-        {/* Course title header */}
-        <div className="px-5 py-5 border-b" style={{ borderColor: "var(--border)" }}>
+        {/* Course title + back */}
+        <div className="px-5 py-5 border-b flex-shrink-0" style={{ borderColor: "var(--border)" }}>
           <Link
             href={`/course/${courseSlug}`}
             className="text-xs font-medium uppercase tracking-wide hover:underline"
@@ -69,10 +72,31 @@ export function LessonSidebar({ courseSlug, courseTitle, modules, activeLessonId
           <p className="text-sm font-semibold mt-2 leading-snug" style={{ color: "var(--text-primary)" }}>
             {courseTitle}
           </p>
+
+          {/* Progress bar */}
+          {progressPercent !== undefined && (
+            <div className="mt-3">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs" style={{ color: "var(--text-secondary)" }}>Your progress</span>
+                <span className="text-xs font-semibold" style={{ color: progressPercent === 100 ? "var(--success)" : "var(--text-secondary)" }}>
+                  {progressPercent}%
+                </span>
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--bg-elevated)" }}>
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{
+                    width: `${progressPercent}%`,
+                    background: progressPercent === 100 ? "var(--success)" : "var(--brand)",
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Module / lesson tree */}
-        <nav className="overflow-y-auto">
+        <nav className="overflow-y-auto flex-1">
           {modules.map((mod) => (
             <div key={mod.id} className="border-b" style={{ borderColor: "var(--border)" }}>
               <p
@@ -84,30 +108,45 @@ export function LessonSidebar({ courseSlug, courseTitle, modules, activeLessonId
               <ul>
                 {mod.lessons.map((lesson) => {
                   const isActive = lesson.id === activeLessonId;
+                  const isLocked = lesson.isLocked && !lesson.isPreview;
+
                   return (
                     <li key={lesson.id}>
-                      <Link
-                        href={`/learn/${courseSlug}/${lesson.id}`}
-                        className="flex items-start gap-3 px-5 py-3 text-sm transition-colors"
-                        style={{
-                          background: isActive ? "var(--brand)" : undefined,
-                          color: isActive ? "#fff" : "var(--text-primary)",
-                        }}
-                        onClick={() => setCollapsed(true)}
-                      >
-                        <span className="mt-0.5 text-xs w-4 text-center flex-shrink-0 opacity-60">
-                          {TYPE_ICON[lesson.type] ?? "•"}
-                        </span>
-                        <span className="flex-1 leading-snug">{lesson.title}</span>
-                        {lesson.isPreview && !isActive && (
-                          <span
-                            className="text-xs px-1.5 py-0.5 rounded flex-shrink-0 self-center"
-                            style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)" }}
-                          >
-                            Free
+                      {isLocked ? (
+                        <div
+                          className="flex items-start gap-3 px-5 py-3 text-sm opacity-50 cursor-not-allowed"
+                          style={{ color: "var(--text-secondary)" }}
+                          title="This lesson unlocks later"
+                        >
+                          <span className="mt-0.5 text-xs w-4 text-center flex-shrink-0">🔒</span>
+                          <span className="flex-1 leading-snug">{lesson.title}</span>
+                        </div>
+                      ) : (
+                        <Link
+                          href={`/learn/${courseSlug}/${lesson.id}`}
+                          className="flex items-start gap-3 px-5 py-3 text-sm transition-colors"
+                          style={{
+                            background: isActive ? "var(--brand)" : undefined,
+                            color: isActive ? "#fff" : "var(--text-primary)",
+                          }}
+                          onClick={() => setCollapsed(true)}
+                        >
+                          <span className="mt-0.5 text-xs w-4 text-center flex-shrink-0 opacity-60">
+                            {lesson.isCompleted
+                              ? <span style={{ color: isActive ? "#fff" : "var(--success)" }}>✓</span>
+                              : TYPE_ICON[lesson.type] ?? "•"}
                           </span>
-                        )}
-                      </Link>
+                          <span className="flex-1 leading-snug">{lesson.title}</span>
+                          {lesson.isPreview && !isActive && (
+                            <span
+                              className="text-xs px-1.5 py-0.5 rounded flex-shrink-0 self-center"
+                              style={{ background: "var(--bg-elevated)", color: "var(--text-secondary)" }}
+                            >
+                              Free
+                            </span>
+                          )}
+                        </Link>
+                      )}
                     </li>
                   );
                 })}

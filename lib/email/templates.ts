@@ -1,4 +1,4 @@
-import type { EnrollmentConfirmationParams, PurchaseReceiptParams } from "./types";
+import type { EnrollmentConfirmationParams, PurchaseReceiptParams, PasswordResetParams } from "./types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
@@ -133,5 +133,47 @@ export function purchaseReceiptText(p: PurchaseReceiptParams): string {
     `Your access has been activated. Happy learning!`,
     "",
     `— The Perseus Team`,
+  ].join("\n");
+}
+
+// ─── Password Reset ───────────────────────────────────────────────────────────
+
+export function passwordResetHtml(p: PasswordResetParams): string {
+  return layout(
+    "Reset your Perseus password",
+    `
+    <h1>Reset your password</h1>
+    <p>Hi there,</p>
+    <p>
+      We received a request to reset the password for your Perseus account.
+      Click the button below to choose a new password. This link expires in <strong>1 hour</strong>.
+    </p>
+    <p style="margin: 24px 0;">
+      <a href="${p.resetUrl}" class="btn">Reset password →</a>
+    </p>
+    <hr class="divider" />
+    <p class="meta">
+      If you didn't request a password reset, you can safely ignore this email — your password won't change.<br /><br />
+      If the button doesn't work, copy this URL into your browser:<br />
+      <a href="${p.resetUrl}" style="color: #4f46e5;">${p.resetUrl}</a>
+    </p>
+    `
+  );
+}
+
+export function passwordResetText(p: PasswordResetParams): string {
+  return [
+    "Reset your Perseus password",
+    "",
+    "Hi there,",
+    "",
+    "We received a request to reset your Perseus account password.",
+    "Click the link below to choose a new password (expires in 1 hour):",
+    "",
+    p.resetUrl,
+    "",
+    "If you didn't request this, you can ignore this email.",
+    "",
+    "— The Perseus Team",
   ].join("\n");
 }

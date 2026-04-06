@@ -99,6 +99,8 @@ export type CanonicalEventType =
   | "payment.failed"
   | "subscription.started"
   | "subscription.renewed"
+  | "subscription.cancelled"
+  | "subscription.past_due"
   | "refund.created";
 
 /**

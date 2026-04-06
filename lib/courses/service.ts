@@ -29,8 +29,9 @@ export async function getCourse(id: string) {
       faqs: { orderBy: { position: "asc" } },
       testimonials: { orderBy: { createdAt: "desc" } },
       offers: {
-        where: { isActive: true },
+        // Admin editor shows ALL offers; public pages filter isActive at query time
         include: { prices: true },
+        orderBy: { createdAt: "asc" },
       },
     },
   });

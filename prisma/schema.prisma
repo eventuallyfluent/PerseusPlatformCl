@@ -80,12 +80,14 @@ model User {
   isAdmin       Boolean   @default(false)
   createdAt     DateTime  @default(now())
 
-  accounts      Account[]
-  sessions      Session[]
-  instructor    Instructor?
-  enrollments   Enrollment[]
-  orders        Order[]
-  subscriptions Subscription[]
+  accounts           Account[]
+  sessions           Session[]
+  instructor         Instructor?
+  enrollments        Enrollment[]
+  orders             Order[]
+  subscriptions      Subscription[]
+  lessonCompletions  LessonCompletion[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Account {
@@ -162,13 +164,14 @@ model Course {
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
 
-  instructor    Instructor     @relation(fields: [instructorId], references: [id])
-  modules       Module[]
-  faqs          FAQ[]
-  testimonials  Testimonial[]
-  generatedPage GeneratedPage?
-  enrollments   Enrollment[]
-  offers        Offer[]
+  instructor        Instructor       @relation(fields: [instructorId], references: [id])
+  modules           Module[]
+  faqs              FAQ[]
+  testimonials      Testimonial[]
+  generatedPage     GeneratedPage?
+  enrollments       Enrollment[]
+  offers            Offer[]
+  lessonCompletions LessonCompletion[]
 }
 
 model Module {
@@ -198,7 +201,8 @@ model Lesson {
   isPreview   Boolean      @default(false)
   createdAt   DateTime     @default(now())
 
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  module            Module             @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  lessonCompletions LessonCompletion[]
 
   @@index([moduleId, position])
 }
@@ -341,13 +345,13 @@ model Enrollment {
   id         String    @id @default(cuid())
   userId     String
   courseId   String
-  orderId    String    @unique
+  orderId    String?   @unique   // null for manual/admin-created enrollments
   enrolledAt DateTime  @default(now())
   expiresAt  DateTime?
 
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
-  order  Order  @relation(fields: [orderId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
+  course Course  @relation(fields: [courseId], references: [id])
+  order  Order?  @relation(fields: [orderId], references: [id])
 
   @@unique([userId, courseId])
 }
@@ -420,4 +424,35 @@ model SiteSetting {
   key       String   @id           // e.g. "hero.headline"
   value     String                 // plain text or JSON string
   updatedAt DateTime @updatedAt
+}
+
+// ─── Progress Tracking ────────────────────────────────────────────────────────
+// Records when a student marks a lesson as complete.
+// Drives progress bars, course completion detection, and drip-unlock checks.
+model LessonCompletion {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  courseId    String
+  completedAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId, courseId])
+}
+
+// ─── Password Reset ──────────────────────────────────────────────────────────
+// Stores single-use, time-limited tokens for the forgot-password flow.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

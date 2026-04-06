@@ -1,11 +1,13 @@
 import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
-import type { EmailAdapter, EnrollmentConfirmationParams, PurchaseReceiptParams } from "./types";
+import type { EmailAdapter, EnrollmentConfirmationParams, PurchaseReceiptParams, PasswordResetParams } from "./types";
 import {
   enrollmentConfirmationHtml,
   enrollmentConfirmationText,
   purchaseReceiptHtml,
   purchaseReceiptText,
+  passwordResetHtml,
+  passwordResetText,
 } from "./templates";
 
 // ─── Transporter singleton ────────────────────────────────────────────────────
@@ -66,11 +68,8 @@ export class NodemailerAdapter implements EmailAdapter {
       html: enrollmentConfirmationHtml(p),
     });
 
-    // Log preview URL in dev (Ethereal only)
     const previewUrl = nodemailer.getTestMessageUrl(info);
-    if (previewUrl) {
-      console.log(`[email] Enrollment confirmation preview: ${previewUrl}`);
-    }
+    if (previewUrl) console.log(`[email] Enrollment confirmation preview: ${previewUrl}`);
   }
 
   async sendPurchaseReceipt(p: PurchaseReceiptParams): Promise<void> {
@@ -84,8 +83,20 @@ export class NodemailerAdapter implements EmailAdapter {
     });
 
     const previewUrl = nodemailer.getTestMessageUrl(info);
-    if (previewUrl) {
-      console.log(`[email] Purchase receipt preview: ${previewUrl}`);
-    }
+    if (previewUrl) console.log(`[email] Purchase receipt preview: ${previewUrl}`);
+  }
+
+  async sendPasswordReset(p: PasswordResetParams): Promise<void> {
+    const transporter = await getTransporter();
+    const info = await transporter.sendMail({
+      from: FROM,
+      to: p.to,
+      subject: "Reset your Perseus password",
+      text: passwordResetText(p),
+      html: passwordResetHtml(p),
+    });
+
+    const previewUrl = nodemailer.getTestMessageUrl(info);
+    if (previewUrl) console.log(`[email] Password reset preview: ${previewUrl}`);
   }
 }

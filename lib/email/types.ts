@@ -19,7 +19,13 @@ export type PurchaseReceiptParams = {
   orderId: string;
 };
 
+export type PasswordResetParams = {
+  to: string;
+  resetUrl: string;
+};
+
 export interface EmailAdapter {
   sendEnrollmentConfirmation(params: EnrollmentConfirmationParams): Promise<void>;
   sendPurchaseReceipt(params: PurchaseReceiptParams): Promise<void>;
+  sendPasswordReset(params: PasswordResetParams): Promise<void>;
 }

@@ -99,6 +99,13 @@ function LoginForm() {
             </p>
           )}
 
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className="text-sm font-medium" style={{ color: "var(--text-primary)" }} />
+            <Link href="/forgot-password" className="text-xs hover:opacity-80 transition-opacity" style={{ color: "var(--accent)" }}>
+              Forgot password?
+            </Link>
+          </div>
+
           <button
             type="submit"
             disabled={loading}

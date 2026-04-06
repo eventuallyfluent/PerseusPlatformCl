@@ -141,6 +141,40 @@ export async function processWebhookEvent(
         break;
       }
 
+      case "subscription.cancelled": {
+        // SCP logic: when a subscription is cancelled/deleted, revoke enrollment
+        if (!event.gatewaySubId) break;
+        await db.subscription.updateMany({
+          where: { gatewaySubId: event.gatewaySubId },
+          data: { status: "CANCELLED" },
+        });
+
+        // Find the subscription to get userId + offerId → courseId
+        const cancelledSub = await db.subscription.findFirst({
+          where: { gatewaySubId: event.gatewaySubId },
+          include: { offer: { select: { courseId: true } } },
+        });
+        if (cancelledSub) {
+          // Remove enrollment so student loses access on cancellation
+          await db.enrollment.deleteMany({
+            where: {
+              userId: cancelledSub.userId,
+              courseId: cancelledSub.offer.courseId,
+            },
+          });
+        }
+        break;
+      }
+
+      case "subscription.past_due": {
+        if (!event.gatewaySubId) break;
+        await db.subscription.updateMany({
+          where: { gatewaySubId: event.gatewaySubId },
+          data: { status: "PAST_DUE" },
+        });
+        break;
+      }
+
       case "refund.created": {
         // event.gatewayOrderId carries the gateway's PaymentIntent/charge ID.
         // Resolve to our internal orderId via the Payment table.
